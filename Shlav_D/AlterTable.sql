@@ -1,0 +1,5 @@
+-- ============================================================
+-- Stage D
+-- No table structure changes were added.
+-- All programs are based only on the existing Stage C schema.
+-- ============================================================
