@@ -95,15 +95,17 @@ The PostgreSQL server must be running and the `LogisticsDB` database must alread
 
 ## Screenshots
 
-Stage E screenshots should be placed in:
+![img.png](img.png)
+![img_1.png](img_1.png)
+![img_2.png](img_2.png)
+![img_3.png](img_3.png)
+![img_4.png](img_4.png)
 
 ```text
 Shlav_E/screenshots
 ```
 
-Recommended screenshots:
 
-- Dashboard
 - Fleet CRUD
 - Add/Edit dialog
 - Deliveries screen
