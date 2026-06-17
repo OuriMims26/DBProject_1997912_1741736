@@ -51,19 +51,22 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 public class Main {
+    // ------------------------------------------------------------
+    // Configuration de la base de donnees
+    // ------------------------------------------------------------
     private static final String DB_URL = "jdbc:postgresql://localhost:5432/LogisticsDB";
     private static final String DB_USER = "postgres";
     private static final String DB_PASSWORD = "26Zakai26!!";
 
+    // ------------------------------------------------------------
+    // Couleurs principales du theme OuriLogistic
+    // ------------------------------------------------------------
     private static final Color GREEN = new Color(48, 166, 94);
     private static final Color GREEN_DARK = new Color(35, 134, 74);
     private static final Color GREEN_SOFT = new Color(232, 248, 239);
     private static final Color BLUE = new Color(56, 116, 255);
-    private static final Color BLUE_SOFT = new Color(232, 239, 255);
     private static final Color RED = new Color(232, 66, 92);
-    private static final Color RED_SOFT = new Color(255, 237, 241);
     private static final Color AMBER = new Color(217, 125, 0);
-    private static final Color AMBER_SOFT = new Color(255, 246, 229);
     private static final Color DARK = new Color(18, 25, 40);
     private static final Color TEXT = new Color(75, 85, 105);
     private static final Color MUTED = new Color(132, 143, 161);
@@ -87,10 +90,14 @@ public class Main {
         });
     }
 
+    // Ouvre une nouvelle connexion PostgreSQL pour chaque action.
     private static Connection openConnection() throws Exception {
         return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
     }
 
+    // ------------------------------------------------------------
+    // Creation de la fenetre principale
+    // ------------------------------------------------------------
     private void show() {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setMinimumSize(new Dimension(1280, 780));
@@ -121,6 +128,9 @@ public class Main {
         frame.setVisible(true);
     }
 
+    // ------------------------------------------------------------
+    // Menu lateral et navigation entre les ecrans
+    // ------------------------------------------------------------
     private JPanel createSidebar() {
         sidebar.setPreferredSize(new Dimension(292, 0));
         sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
@@ -210,6 +220,9 @@ public class Main {
         }
     }
 
+    // ------------------------------------------------------------
+    // Dashboard et composants visuels principaux
+    // ------------------------------------------------------------
     private JPanel createDashboard() {
         JPanel screen = createScreenShell("Dashboard", "Logistics overview for deliveries, fleet and incidents");
         JPanel dashboardBody = new JPanel(new GridBagLayout());
@@ -287,6 +300,7 @@ public class Main {
         return outer;
     }
 
+    // Barre superieure affichee dans chaque ecran.
     private JPanel createTopBar() {
         JPanel topBar = new JPanel(new FlowLayout(FlowLayout.RIGHT, 12, 0));
         topBar.setOpaque(false);
@@ -352,6 +366,9 @@ public class Main {
         return panel;
     }
 
+    // ------------------------------------------------------------
+    // Ecrans de tables : affichage, recherche et boutons CRUD
+    // ------------------------------------------------------------
     private JPanel createDataScreen(String title, String subtitle, String tableName, String sql) {
         JPanel screen = createScreenShell(title, subtitle);
         RoundedPanel panel = new ElevatedPanel(18, WHITE);
@@ -700,6 +717,9 @@ public class Main {
         return screen;
     }
 
+    // ------------------------------------------------------------
+    // Ecran Reports : requetes de l'etape B et programmes de l'etape D
+    // ------------------------------------------------------------
     private JPanel createReportsScreen() {
         JPanel screen = createScreenShell("Reports", "Stage B queries and Stage D programs");
         JPanel panel = new JPanel(new GridLayout(2, 2, 18, 18));
@@ -740,6 +760,7 @@ public class Main {
         return button;
     }
 
+    // Bouton standard utilise dans les formulaires et les actions.
     private JButton createActionButton(String text, boolean primary) {
         JButton button = new JButton(text);
         button.setFocusPainted(false);
@@ -752,6 +773,7 @@ public class Main {
         return button;
     }
 
+    // Affiche le resultat d'une requete dans une fenetre avec tableau.
     private void showReportResults(String title, String sql) {
         JTable table = new JTable(loadTableModel(sql));
         styleTable(table);
@@ -832,6 +854,9 @@ public class Main {
         return card;
     }
 
+    // ------------------------------------------------------------
+    // Tableaux : style, rechargement, colonnes techniques cachees
+    // ------------------------------------------------------------
     private void styleTable(JTable table) {
         table.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         table.setRowHeight(46);
@@ -929,6 +954,7 @@ public class Main {
         return scrollPane;
     }
 
+    // Execute une requete SELECT et transforme le resultat en modele JTable.
     private DefaultTableModel loadTableModel(String sql) {
         DefaultTableModel model = new DefaultTableModel() {
             @Override
@@ -966,6 +992,7 @@ public class Main {
         return scalar("SELECT COUNT(*) FROM " + tableName + " WHERE " + condition);
     }
 
+    // Retourne une seule valeur SQL, utilisee pour les compteurs du dashboard.
     private String scalar(String sql) {
         try (Connection connection = openConnection();
              Statement statement = connection.createStatement();
@@ -980,6 +1007,9 @@ public class Main {
         showInfo("Next Step", action + " for " + target + " will be connected in the CRUD step.");
     }
 
+    // ------------------------------------------------------------
+    // CRUD - Vehicles
+    // ------------------------------------------------------------
     private boolean showVehicleDialog(Integer vehicleId) {
         boolean editMode = vehicleId != null;
         VehicleData existing = editMode ? loadVehicle(vehicleId) : null;
@@ -1052,6 +1082,9 @@ public class Main {
         }
     }
 
+    // ------------------------------------------------------------
+    // CRUD - Depots
+    // ------------------------------------------------------------
     private boolean showDepotDialog(Integer depotId) {
         boolean editMode = depotId != null;
         DepotData existing = editMode ? loadDepot(depotId) : null;
@@ -1112,6 +1145,9 @@ public class Main {
         }
     }
 
+    // ------------------------------------------------------------
+    // CRUD - Routes
+    // ------------------------------------------------------------
     private boolean showRouteDialog(Integer routeId) {
         boolean editMode = routeId != null;
         RouteData existing = editMode ? loadRoute(routeId) : null;
@@ -1175,6 +1211,9 @@ public class Main {
         }
     }
 
+    // ------------------------------------------------------------
+    // CRUD - Deliveries
+    // ------------------------------------------------------------
     private boolean showDeliveryDialog(Integer deliveryId) {
         boolean editMode = deliveryId != null;
         DeliveryData existing = editMode ? loadDelivery(deliveryId) : null;
@@ -1245,6 +1284,9 @@ public class Main {
         }
     }
 
+    // ------------------------------------------------------------
+    // CRUD - Incidents
+    // ------------------------------------------------------------
     private boolean showIncidentDialog(Integer incidentId) {
         boolean editMode = incidentId != null;
         IncidentData existing = editMode ? loadIncident(incidentId) : null;
@@ -1430,6 +1472,9 @@ public class Main {
         }
     }
 
+    // ------------------------------------------------------------
+    // CRUD - Zones
+    // ------------------------------------------------------------
     private boolean showZoneDialog(Integer zoneId) {
         boolean editMode = zoneId != null;
         ZoneData existing = editMode ? loadZone(zoneId) : null;
@@ -1503,6 +1548,9 @@ public class Main {
         }
     }
 
+    // ------------------------------------------------------------
+    // CRUD - Rates
+    // ------------------------------------------------------------
     private boolean showRateDialog(Integer rateId) {
         boolean editMode = rateId != null;
         RateData existing = editMode ? loadRate(rateId) : null;
@@ -1590,6 +1638,9 @@ public class Main {
         }
     }
 
+    // ------------------------------------------------------------
+    // CRUD - Vehicle Assignments
+    // ------------------------------------------------------------
     private boolean showAssignmentDialog(Integer assignmentId) {
         boolean editMode = assignmentId != null;
         AssignmentData existing = editMode ? loadAssignment(assignmentId) : null;
@@ -1674,6 +1725,9 @@ public class Main {
         }
     }
 
+    // ------------------------------------------------------------
+    // CRUD - Route Stops
+    // ------------------------------------------------------------
     private boolean showStopDialog(Integer stopId) {
         boolean editMode = stopId != null;
         StopData existing = editMode ? loadStop(stopId) : null;
@@ -1754,6 +1808,9 @@ public class Main {
         }
     }
 
+    // ------------------------------------------------------------
+    // CRUD - Delivery Status History
+    // ------------------------------------------------------------
     private boolean showHistoryDialog(Integer historyId) {
         boolean editMode = historyId != null;
         HistoryData existing = editMode ? loadHistory(historyId) : null;
@@ -2332,6 +2389,9 @@ public class Main {
         }
     }
 
+    // ------------------------------------------------------------
+    // Listes deroulantes : charger les noms lisibles au lieu des IDs
+    // ------------------------------------------------------------
     private List<DepotOption> loadDepotOptions() {
         List<DepotOption> depots = new ArrayList<>();
         try (Connection connection = openConnection();
@@ -2460,6 +2520,9 @@ public class Main {
         return routes;
     }
 
+    // ------------------------------------------------------------
+    // Formulaires et fenetres de dialogue
+    // ------------------------------------------------------------
     private JPanel createVehicleForm(
             JComboBox<DepotOption> depotBox,
             JComboBox<String> typeBox,
@@ -2490,6 +2553,7 @@ public class Main {
         return form;
     }
 
+    // Ajoute une ligne label + champ dans un formulaire.
     private void addFormRow(JPanel form, GridBagConstraints constraints, int row, String labelText, Component field) {
         JLabel label = new JLabel(labelText);
         label.setFont(new Font("Segoe UI", Font.BOLD, 13));
@@ -2512,6 +2576,7 @@ public class Main {
         field.setBorder(new RoundedBorder(BORDER, 12, new Insets(8, 12, 8, 12)));
     }
 
+    // Fenetre de formulaire reutilisee par Add/Edit.
     private boolean showFormDialog(String title, String subtitle, JPanel form, String primaryAction) {
         final boolean[] accepted = {false};
         JDialog dialog = createStyledDialog(title);
@@ -2525,6 +2590,7 @@ public class Main {
         return accepted[0];
     }
 
+    // Messages simples pour l'utilisateur.
     private void showInfo(String title, String message) {
         showMessage(title, message, GREEN, "OK");
     }
@@ -2544,6 +2610,7 @@ public class Main {
         dialog.setVisible(true);
     }
 
+    // Petit feedback non bloquant apres une action reussie.
     private void showToast(String message, Color accent) {
         JDialog toast = new JDialog(frame);
         toast.setUndecorated(true);
@@ -2573,6 +2640,7 @@ public class Main {
         timer.start();
     }
 
+    // Confirmation avant une action dangereuse.
     private boolean showConfirm(String title, String message, String primaryAction) {
         final boolean[] accepted = {false};
         JDialog dialog = createStyledDialog(title);
@@ -2660,6 +2728,9 @@ public class Main {
         return message == null ? "Database operation failed." : message;
     }
 
+    // ------------------------------------------------------------
+    // Selection dans les listes deroulantes
+    // ------------------------------------------------------------
     private void selectDepot(JComboBox<DepotOption> comboBox, int depotId) {
         for (int i = 0; i < comboBox.getItemCount(); i++) {
             if (comboBox.getItemAt(i).id == depotId) {
@@ -2714,6 +2785,9 @@ public class Main {
         }
     }
 
+    // ------------------------------------------------------------
+    // Helpers SQL generiques et conversions de saisie utilisateur
+    // ------------------------------------------------------------
     private void executeUpdate(String sql, Object... values) throws Exception {
         try (Connection connection = openConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -2737,6 +2811,7 @@ public class Main {
         }
     }
 
+    // Genere un nouvel ID car les tables du projet utilisent des IDs manuels.
     private int nextId(String tableName, String idColumn) throws Exception {
         String sql = "SELECT COALESCE(MAX(" + idColumn + "), 0) + 1 FROM " + tableName;
         try (Connection connection = openConnection();
@@ -2803,6 +2878,9 @@ public class Main {
         }
     }
 
+    // ------------------------------------------------------------
+    // Requetes SQL utilisees par les ecrans
+    // ------------------------------------------------------------
     private String vehiclesSql() {
         return """
                 SELECT
@@ -3049,6 +3127,11 @@ public class Main {
                 """;
     }
 
+    // ------------------------------------------------------------
+    // Petits types internes
+    // ------------------------------------------------------------
+    // Les records servent a transporter proprement les donnees entre
+    // les formulaires Swing et les requetes SQL.
     private interface ChangeHandler {
         void onChange();
     }
@@ -3185,6 +3268,10 @@ public class Main {
     ) {
     }
 
+    // ------------------------------------------------------------
+    // Composants Swing personnalises
+    // ------------------------------------------------------------
+    // Ces classes donnent le style arrondi/moderne sans librairie externe.
     private static class SimpleDocumentListener implements javax.swing.event.DocumentListener {
         private final ChangeHandler handler;
 
