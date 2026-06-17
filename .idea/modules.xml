@@ -3,6 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/DBProject_1997912_1741736.iml" filepath="$PROJECT_DIR$/.idea/DBProject_1997912_1741736.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Shlav_B/Shlav_B.iml" filepath="$PROJECT_DIR$/Shlav_B/Shlav_B.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Shlav_C/Shlav_C.iml" filepath="$PROJECT_DIR$/Shlav_C/Shlav_C.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Shlav_E/Shlav_E.iml" filepath="$PROJECT_DIR$/Shlav_E/Shlav_E.iml" />
     </modules>
   </component>
 </project>
